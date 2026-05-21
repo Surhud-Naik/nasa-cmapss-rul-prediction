@@ -2,7 +2,7 @@
 
 This repository implements a complete machine learning pipeline to estimate the **Remaining Useful Life (RUL)** of turbofan aircraft engines using multi-channel sensor data. Utilizing the classic **NASA CMAPSS (FD001) dataset**, this project develops, optimizes, and evaluates a variety of modeling architectures, ranging from baseline statistical regressions to deep sequential architectures (LSTMs and 1D CNNs).
 
-## 📌 Project Objectives & Accomplishments
+## Project Objectives & Accomplishments
 
 * **End-to-End Pipeline Creation:** Built a modular Python-based workflow implementing data ingestion, target label generation, exploratory analysis, preprocessing, and model evaluation.
 * **Piece-Wise Linear Target Construction:** Formulated the continuous inductive target labels ($RUL$) by calculating maximum running cycles per engine unit and applied a domain-standard $125$-cycle ceiling threshold to limit early-life noise.
@@ -25,11 +25,11 @@ The metrics below represent predictive accuracy ($R^2$ Score) evaluated on held-
 | **1D CNN** | Temporal Convolutions (64 & 128 channels, Sliding Window = 20) | — | $0.839684$ | $16.7499$ |
 | **LSTM** | 128 Hidden Units Sequential RNN (Sliding Window = 20) | — | $0.838396$ | $16.8170$ |
 
-> 💡 **Key Takeaway:** The **Tuned Random Forest Regressor** achieved the highest overall accuracy ($R^2 = 0.8685$). Because the FD001 subset contains a single operating condition and single fault mode, its asset degradation trend is smooth and near-linear post-clipping. Therefore, well-regularized tabular architectures pairing explicit temporal features (lag, rolling mean) can match or out-perform complex deep sequence networks on simpler prognostic settings.
+> **Key Takeaway:** The **Tuned Random Forest Regressor** achieved the highest overall accuracy ($R^2 = 0.8685$). Because the FD001 subset contains a single operating condition and single fault mode, its asset degradation trend is smooth and near-linear post-clipping. Therefore, well-regularized tabular architectures pairing explicit temporal features (lag, rolling mean) can match or out-perform complex deep sequence networks on simpler prognostic settings.
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## Tech Stack & Dependencies
 
 * **Core Data Wrangling:** `numpy`, `pandas`
 * **Modeling Frameworks:** `scikit-learn`, `torch` (PyTorch)
@@ -38,12 +38,12 @@ The metrics below represent predictive accuracy ($R^2$ Score) evaluated on held-
 
 ---
 
-## 🧬 Pipeline Structure
+## Final Conclusion
 
-### 1. Feature Engineering
-```python
-# Extracted structural dynamics from 21 sensor feeds within each engine unit
-df['sensor_roll_mean'] = grp.transform(lambda x: x.rolling(15, min_periods=1).mean())
-df['sensor_lag1']      = df.groupby('unit')['sensor'].shift(1)
-df['sensor_cumdeg']    = df.groupby('unit')['sensor'].transform(lambda x: x.diff().abs().cumsum())
-```
+The project demonstrates that ensemble learning and sequence-based deep learning architectures are highly effective for Remaining Useful Life prediction tasks.
+
+Among all evaluated approaches:
+
+- **Random Forest** achieved the highest classical ML performance.
+- **1D CNN** achieved the best sequence-model performance.
+- Temporal models such as LSTM and CNN were particularly effective in learning degradation behavior from sequential sensor measurements.
