@@ -13,7 +13,7 @@ This repository implements a complete machine learning pipeline to estimate the 
 
 ---
 
-## 📊 Model Performance Summary
+## Model Performance Summary
 
 The metrics below represent predictive accuracy ($R^2$ Score) evaluated on held-out test engines. Models are strictly evaluated under physical constraints where negative predictions are post-processed to $0$.
 
